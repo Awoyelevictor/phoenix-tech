@@ -1,5 +1,6 @@
 // components/Contact.jsx
 import { useState, useEffect } from 'react';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -11,28 +12,10 @@ const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [emailjsReady, setEmailjsReady] = useState(false);
 
-  // Check if EmailJS is loaded
+  // Initialize EmailJS and mark it ready
   useEffect(() => {
-    const checkEmailJS = () => {
-      if (typeof window !== 'undefined' && window.emailjs) {
-        setEmailjsReady(true);
-        return true;
-      }
-      return false;
-    };
-
-    // Check immediately
-    if (checkEmailJS()) return;
-
-    // If not ready, check every 100ms for up to 5 seconds
-    const interval = setInterval(() => {
-      if (checkEmailJS()) {
-        clearInterval(interval);
-      }
-    }, 100);
-
-    // Cleanup
-    return () => clearInterval(interval);
+    emailjs.init('DQIbN60mIinSwcYb0');
+    setEmailjsReady(true);
   }, []);
 
   const handleChange = (e) => {
@@ -55,7 +38,7 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      await window.emailjs.send(
+      await emailjs.send(
         'service_3wvh4pe',
         'template_hhxlcxl',
         {
