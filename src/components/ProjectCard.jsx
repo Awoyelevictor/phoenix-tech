@@ -12,9 +12,9 @@ const ProjectCard = ({ project }) => {
           {project.description}
         </p>
         <div className="flex flex-wrap gap-2 mb-4">
-          {project.tags.map((tag, index) => (
+          {project.tags.map((tag) => (
             <span 
-              key={index}
+              key={tag}
               className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-100 rounded-full text-xs font-medium"
             >
               {tag}

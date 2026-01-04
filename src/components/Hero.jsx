@@ -1,14 +1,8 @@
 import profilePic from "../assets/profile.jpg"
+import { scrollToSection } from '../utils/scroll'
 
 
 const Hero = () => {
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
   return (
     <section id="home" className="pt-24 pb-16 md:pt-32 md:pb-24 lg:pt-40 lg:pb-32">
       <div className="container mx-auto px-6">
@@ -24,18 +18,20 @@ const Hero = () => {
               I create beautiful, functional websites and applications with a focus on user experience and modern design principles.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center md:justify-start">
-              <button 
+              <a 
+                href="#projects"
                 onClick={() => scrollToSection('projects')}
                 className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-md transition-colors"
               >
                 View My Work
-              </button>
-              <button 
+              </a>
+              <a 
+                href="#contact"
                 onClick={() => scrollToSection('contact')}
                 className="px-6 py-3 border border-indigo-600 text-indigo-600 dark:text-indigo-400 dark:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
               >
                 Contact Me
-              </button>
+              </a>
             </div>
           </div>
 
@@ -51,7 +47,7 @@ const Hero = () => {
             >
               <img 
                 src={profilePic} 
-                alt="Profile" 
+                alt="A portrait of Victor Awoyele" 
                 className="w-full h-full object-cover"
               />
             </div>

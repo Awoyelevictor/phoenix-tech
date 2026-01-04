@@ -1,16 +1,6 @@
 // components/Contact.jsx
-import { useState, useEffect } from 'react';
-import emailjs from '@emailjs/browser';
-
-// Define constants at the module level for wider accessibility
-const EMAILJS_USER = import.meta.env.VITE_EMAILJS_USER || 'DQIbN60mIinSwcYb0';
-const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE || 'service_3wvh4pe';
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE || 'template_hhxlcxl';
-
-// Warn if environment variables are not set in a non-local environment
-if (!import.meta.env.PROD && !import.meta.env.VITE_EMAILJS_USER) {
-  console.warn('VITE_EMAILJS_USER not set. Falling back to hard-coded key; set env vars in Vercel for security.');
-}
+import { useState } from 'react';
+import axios from 'axios';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -20,18 +10,6 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
-  const [emailjsReady, setEmailjsReady] = useState(false);
-
-  // Initialize EmailJS once on component mount
-  useEffect(() => {
-    if (EMAILJS_USER) {
-      emailjs.init(EMAILJS_USER);
-      setEmailjsReady(true);
-    } else {
-      console.error('EmailJS User ID is not set. Cannot initialize email service.');
-      setEmailjsReady(false);
-    }
-  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -42,30 +20,12 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!emailjsReady) {
-      setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus(null), 5000);
-      return;
-    }
 
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
-      // Use the module-level constants directly
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-          to_email: 'awoyeleemma1@gmail.com',
-          reply_to: formData.email
-        }
-      );
-
+      await axios.post('/api/send-email', formData);
       setSubmitStatus('success');
       setFormData({ name: '', email: '', message: '' });
       
@@ -249,7 +209,7 @@ const Contact = () => {
               
               <button
                 type="submit"
-                disabled={isSubmitting || !emailjsReady}
+                disabled={isSubmitting}
                 className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white rounded-lg transition-colors flex items-center justify-center"
               >
                 {isSubmitting ? (

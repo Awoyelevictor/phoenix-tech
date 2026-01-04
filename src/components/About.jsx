@@ -1,10 +1,7 @@
 // components/About.jsx
-const About = () => {
-  const skills = [
-    'HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Prompt Engineering',
-    'Tailwind CSS', 'Git', 'Responsive Design', 'API Integration'
-  ]
+import { skills } from '../data/skills';
 
+const About = () => {
   return (
     <section id="about" className="py-16 md:py-24 bg-white dark:bg-gray-800 transition-colors duration-300">
       <div className="container mx-auto px-6">
@@ -33,9 +30,9 @@ const About = () => {
             <div className="mt-8">
               <h4 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Skills</h4>
               <div className="flex flex-wrap gap-3">
-                {skills.map((skill, index) => (
+                {skills.map((skill) => (
                   <span 
-                    key={index}
+                    key={skill}
                     className="px-4 py-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-100 rounded-full text-sm font-medium"
                   >
                     {skill}

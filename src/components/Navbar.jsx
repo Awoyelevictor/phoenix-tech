@@ -1,5 +1,6 @@
 // components/Navbar.jsx
 import { useState } from 'react'
+import { scrollToSection } from '../utils/scroll'
 
 const Navbar = ({ darkMode, setDarkMode }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -8,11 +9,8 @@ const Navbar = ({ darkMode, setDarkMode }) => {
     setIsMenuOpen(!isMenuOpen)
   }
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
+  const handleScrollAndCloseMenu = (sectionId) => {
+    scrollToSection(sectionId)
     setIsMenuOpen(false)
   }
 
@@ -26,30 +24,34 @@ const Navbar = ({ darkMode, setDarkMode }) => {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <button 
+            <a 
+              href="#home"
               onClick={() => scrollToSection('home')} 
               className="text-gray-700 hover:text-indigo-600 transition-colors dark:text-gray-200 dark:hover:text-indigo-400"
             >
               Home
-            </button>
-            <button 
+            </a>
+            <a 
+              href="#about"
               onClick={() => scrollToSection('about')} 
               className="text-gray-700 hover:text-indigo-600 transition-colors dark:text-gray-200 dark:hover:text-indigo-400"
             >
               About
-            </button>
-            <button 
+            </a>
+            <a 
+              href="#projects"
               onClick={() => scrollToSection('projects')} 
               className="text-gray-700 hover:text-indigo-600 transition-colors dark:text-gray-200 dark:hover:text-indigo-400"
             >
               Projects
-            </button>
-            <button 
+            </a>
+            <a 
+              href="#contact"
               onClick={() => scrollToSection('contact')} 
               className="text-gray-700 hover:text-indigo-600 transition-colors dark:text-gray-200 dark:hover:text-indigo-400"
             >
               Contact
-            </button>
+            </a>
             
             {/* Dark Mode Toggle */}
             <button 
@@ -97,30 +99,34 @@ const Navbar = ({ darkMode, setDarkMode }) => {
         {isMenuOpen && (
           <div className="md:hidden mt-4 py-4 bg-white rounded-lg shadow-lg dark:bg-gray-800">
             <div className="flex flex-col space-y-4">
-              <button 
-                onClick={() => scrollToSection('home')} 
+              <a 
+                href="#home"
+                onClick={() => handleScrollAndCloseMenu('home')} 
                 className="px-4 py-2 text-gray-700 hover:bg-indigo-50 rounded transition-colors dark:text-gray-200 dark:hover:bg-gray-700"
               >
                 Home
-              </button>
-              <button 
-                onClick={() => scrollToSection('about')} 
+              </a>
+              <a 
+                href="#about"
+                onClick={() => handleScrollAndCloseMenu('about')} 
                 className="px-4 py-2 text-gray-700 hover:bg-indigo-50 rounded transition-colors dark:text-gray-200 dark:hover:bg-gray-700"
               >
                 About
-              </button>
-              <button 
-                onClick={() => scrollToSection('projects')} 
+              </a>
+              <a 
+                href="#projects"
+                onClick={() => handleScrollAndCloseMenu('projects')} 
                 className="px-4 py-2 text-gray-700 hover:bg-indigo-50 rounded transition-colors dark:text-gray-200 dark:hover:bg-gray-700"
               >
                 Projects
-              </button>
-              <button 
-                onClick={() => scrollToSection('contact')} 
+              </a>
+              <a 
+                href="#contact"
+                onClick={() => handleScrollAndCloseMenu('contact')} 
                 className="px-4 py-2 text-gray-700 hover:bg-indigo-50 rounded transition-colors dark:text-gray-200 dark:hover:bg-gray-700"
               >
                 Contact 
-              </button>
+              </a>
             </div>
           </div>
         )}
