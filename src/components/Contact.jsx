@@ -2,6 +2,16 @@
 import { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 
+// Define constants at the module level for wider accessibility
+const EMAILJS_USER = import.meta.env.VITE_EMAILJS_USER || 'DQIbN60mIinSwcYb0';
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE || 'service_3wvh4pe';
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE || 'template_hhxlcxl';
+
+// Warn if environment variables are not set in a non-local environment
+if (!import.meta.env.PROD && !import.meta.env.VITE_EMAILJS_USER) {
+  console.warn('VITE_EMAILJS_USER not set. Falling back to hard-coded key; set env vars in Vercel for security.');
+}
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -12,21 +22,15 @@ const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [emailjsReady, setEmailjsReady] = useState(false);
 
-  // Initialize EmailJS using environment variables (Vite) and mark it ready
+  // Initialize EmailJS once on component mount
   useEffect(() => {
-    const EMAILJS_USER = import.meta.env.VITE_EMAILJS_USER || 'DQIbN60mIinSwcYb0';
-    const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE || 'service_3wvh4pe';
-    const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE || 'template_hhxlcxl';
-
-    if (!import.meta.env.VITE_EMAILJS_USER) {
-      console.warn('VITE_EMAILJS_USER not set. Falling back to hard-coded key; set env vars in Vercel for security.');
+    if (EMAILJS_USER) {
+      emailjs.init(EMAILJS_USER);
+      setEmailjsReady(true);
+    } else {
+      console.error('EmailJS User ID is not set. Cannot initialize email service.');
+      setEmailjsReady(false);
     }
-
-    // store service/template ids on the component to use them in handleSubmit
-    emailjs.init(EMAILJS_USER);
-    // attach to window for debug/inspection only (non-critical)
-    window.__EMAILJS = { SERVICE_ID, TEMPLATE_ID };
-    setEmailjsReady(true);
   }, []);
 
   const handleChange = (e) => {
@@ -49,9 +53,7 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      const SERVICE_ID = (window.__EMAILJS && window.__EMAILJS.SERVICE_ID) || import.meta.env.VITE_EMAILJS_SERVICE || 'service_3wvh4pe';
-      const TEMPLATE_ID = (window.__EMAILJS && window.__EMAILJS.TEMPLATE_ID) || import.meta.env.VITE_EMAILJS_TEMPLATE || 'template_hhxlcxl';
-
+      // Use the module-level constants directly
       await emailjs.send(
         SERVICE_ID,
         TEMPLATE_ID,

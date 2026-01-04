@@ -1,9 +1,9 @@
-import { useState } from 'react';
+
 import { projectsData } from '../data/projectsData';
 import ProjectCard from './ProjectCard';
 
 const Projects = () => {
-  const [projects, setProjects] = useState(projectsData);
+  const projects = projectsData;
   
   return (
     <section id="projects" className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
