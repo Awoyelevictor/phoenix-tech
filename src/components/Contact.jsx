@@ -49,9 +49,12 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
+      const SERVICE_ID = (window.__EMAILJS && window.__EMAILJS.SERVICE_ID) || import.meta.env.VITE_EMAILJS_SERVICE || 'service_3wvh4pe';
+      const TEMPLATE_ID = (window.__EMAILJS && window.__EMAILJS.TEMPLATE_ID) || import.meta.env.VITE_EMAILJS_TEMPLATE || 'template_hhxlcxl';
+
       await emailjs.send(
-        'service_3wvh4pe',
-        'template_hhxlcxl',
+        SERVICE_ID,
+        TEMPLATE_ID,
         {
           from_name: formData.name,
           from_email: formData.email,
