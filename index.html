@@ -11,11 +11,20 @@
   <body>
     <div id="root"></div>
     <script>
-      // Check for dark mode preference
-      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
+      // Check for dark mode preference (use the same key as the React app: `darkMode`)
+      try {
+        const saved = localStorage.getItem('darkMode');
+        const isDark = saved === 'true' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {
+        // If accessing localStorage throws (rare), fall back to prefers-color-scheme
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.classList.add('dark');
+        }
       }
     </script>
     <script type="module" src="/src/main.jsx"></script>

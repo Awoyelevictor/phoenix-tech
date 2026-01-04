@@ -12,9 +12,20 @@ const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [emailjsReady, setEmailjsReady] = useState(false);
 
-  // Initialize EmailJS and mark it ready
+  // Initialize EmailJS using environment variables (Vite) and mark it ready
   useEffect(() => {
-    emailjs.init('DQIbN60mIinSwcYb0');
+    const EMAILJS_USER = import.meta.env.VITE_EMAILJS_USER || 'DQIbN60mIinSwcYb0';
+    const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE || 'service_3wvh4pe';
+    const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE || 'template_hhxlcxl';
+
+    if (!import.meta.env.VITE_EMAILJS_USER) {
+      console.warn('VITE_EMAILJS_USER not set. Falling back to hard-coded key; set env vars in Vercel for security.');
+    }
+
+    // store service/template ids on the component to use them in handleSubmit
+    emailjs.init(EMAILJS_USER);
+    // attach to window for debug/inspection only (non-critical)
+    window.__EMAILJS = { SERVICE_ID, TEMPLATE_ID };
     setEmailjsReady(true);
   }, []);
 
