@@ -57,7 +57,7 @@ app.post('/api/send-email', async (req, res) => {
 });
 
 // Catch-all to serve index.html for any unhandled routes (SPA behavior)
-app.get('*', (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
 });
 
