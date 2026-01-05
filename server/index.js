@@ -2,14 +2,23 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
+import path from 'path'; // Import path module
+import { fileURLToPath } from 'url'; // Import fileURLToPath
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the 'dist' directory
+app.use(express.static(path.join(__dirname, '..', 'dist')));
 
 // Create a Nodemailer transporter using environment variables
 const transporter = nodemailer.createTransport({
@@ -45,6 +54,11 @@ app.post('/api/send-email', async (req, res) => {
     console.error('Failed to send message:', error);
     res.status(500).json({ error: 'Failed to send email' });
   }
+});
+
+// Catch-all to serve index.html for any unhandled routes (SPA behavior)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
 });
 
 app.listen(port, () => {
