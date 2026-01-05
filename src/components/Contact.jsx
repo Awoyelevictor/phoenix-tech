@@ -18,6 +18,8 @@ const Contact = () => {
     });
   };
 
+  const API_BASE = import.meta.env.VITE_API_URL || '';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -25,7 +27,7 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      await axios.post('/api/send-email', formData);
+      await axios.post(`${API_BASE}/api/send-email`, formData);
       setSubmitStatus('success');
       setFormData({ name: '', email: '', message: '' });
       
